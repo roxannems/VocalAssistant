@@ -1,0 +1,10 @@
+c:\users\david\documents\visual studio 2015\Projects\SpeechRecognitionApp\SpeechRecognitionApp\bin\Debug\SpeechRecognitionApp.exe.config
+c:\users\david\documents\visual studio 2015\Projects\SpeechRecognitionApp\SpeechRecognitionApp\bin\Debug\SpeechRecognitionApp.exe
+c:\users\david\documents\visual studio 2015\Projects\SpeechRecognitionApp\SpeechRecognitionApp\bin\Debug\SpeechRecognitionApp.pdb
+c:\users\david\documents\visual studio 2015\Projects\SpeechRecognitionApp\SpeechRecognitionApp\obj\Debug\SpeechRecognitionApp.csprojResolveAssemblyReference.cache
+c:\users\david\documents\visual studio 2015\Projects\SpeechRecognitionApp\SpeechRecognitionApp\obj\Debug\SpeechRecognitionApp.Form1.resources
+c:\users\david\documents\visual studio 2015\Projects\SpeechRecognitionApp\SpeechRecognitionApp\obj\Debug\SpeechRecognitionApp.Properties.Resources.resources
+c:\users\david\documents\visual studio 2015\Projects\SpeechRecognitionApp\SpeechRecognitionApp\obj\Debug\SpeechRecognitionApp.csproj.GenerateResource.Cache
+c:\users\david\documents\visual studio 2015\Projects\SpeechRecognitionApp\SpeechRecognitionApp\obj\Debug\SpeechRecognitionApp.exe
+c:\users\david\documents\visual studio 2015\Projects\SpeechRecognitionApp\SpeechRecognitionApp\obj\Debug\SpeechRecognitionApp.pdb
+C:\Users\david\documents\visual studio 2015\Projects\SpeechRecognitionApp\SpeechRecognitionApp\bin\Debug\Microsoft.Speech.dll
