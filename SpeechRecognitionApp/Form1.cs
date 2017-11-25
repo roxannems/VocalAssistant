@@ -24,7 +24,7 @@ namespace SpeechRecognitionApp {
     
     public partial class Form1 : Form {
 
-
+        string currentDir = System.AppDomain.CurrentDomain.BaseDirectory;
         //Form Declaration
         SpeechSynthesizer ss = new SpeechSynthesizer();
         PromptBuilder pb = new PromptBuilder();
@@ -122,19 +122,19 @@ namespace SpeechRecognitionApp {
                     break;
                 case "get bitcoin value":
                     txtContents.Text += "Bitcoin + ";
-                    string bitcoinValue = ReturnCurrency("https://coinmarketcap.com/currencies/bitcoin/", @"C:\bitcoinFile.html", "quote_price", 2);
+                    string bitcoinValue = ReturnCurrency("https://coinmarketcap.com/currencies/bitcoin/", currentDir + @"\bitcoinFile.html", "quote_price", 2);
                     ss.SpeakAsync(bitcoinValue);
                     txtContents.Text += bitcoinValue + Environment.NewLine;
                     break;
                 case "tell currency-exchange":
                     txtContents.Text += "1 Eur To Ron : ";
-                    string valueEurtoRon = ReturnCurrency("http://www.xe.com/currencyconverter/convert/?Amount=1&From=EUR&To=RON", @"C:\EurToRon.html", "uccResultAmount", 120);
+                    string valueEurtoRon = ReturnCurrency("http://www.xe.com/currencyconverter/convert/?Amount=1&From=EUR&To=RON", currentDir + @"\EurToRon.html", "uccResultAmount", 120);
                     ss.SpeakAsync(valueEurtoRon);
                     txtContents.Text += valueEurtoRon + Environment.NewLine;
                     break;
                 case "tell currency-exchange to Dollar":
                     txtContents.Text += "1 Eur To USD : ";
-                    string valueEurToUsd = ReturnCurrency("http://www.xe.com/currencyconverter/convert/?Amount=1&From=EUR&To=USD", @"C:\EurToUSD.html", "uccResultAmount", 120);
+                    string valueEurToUsd = ReturnCurrency("http://www.xe.com/currencyconverter/convert/?Amount=1&From=EUR&To=USD", currentDir + @"\EurToUSD.html", "uccResultAmount", 120);
                     ss.SpeakAsync(valueEurToUsd);
                     txtContents.Text += valueEurToUsd + Environment.NewLine;
                     break;
