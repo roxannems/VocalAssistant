@@ -156,8 +156,8 @@ namespace SpeechRecognitionApp {
 
         private void btnStop_Click(object sender, EventArgs e) {
             sre.RecognizeAsyncStop();
-            btnStart.Enabled = false;
-            btnStop.Enabled = true;
+            btnStart.Enabled = true;
+            btnStop.Enabled = false;
         }
 
         public static string GetLocalIPAddress() {
