@@ -8,3 +8,13 @@ c:\users\david\documents\visual studio 2015\Projects\SpeechRecognitionApp\Speech
 c:\users\david\documents\visual studio 2015\Projects\SpeechRecognitionApp\SpeechRecognitionApp\obj\Debug\SpeechRecognitionApp.exe
 c:\users\david\documents\visual studio 2015\Projects\SpeechRecognitionApp\SpeechRecognitionApp\obj\Debug\SpeechRecognitionApp.pdb
 C:\Users\david\documents\visual studio 2015\Projects\SpeechRecognitionApp\SpeechRecognitionApp\bin\Debug\Microsoft.Speech.dll
+C:\Users\david\Desktop\cc_SpeechProject\VocalAssistant\SpeechRecognitionApp\bin\Debug\SpeechRecognitionApp.exe.config
+C:\Users\david\Desktop\cc_SpeechProject\VocalAssistant\SpeechRecognitionApp\obj\Debug\SpeechRecognitionApp.exe
+C:\Users\david\Desktop\cc_SpeechProject\VocalAssistant\SpeechRecognitionApp\obj\Debug\SpeechRecognitionApp.pdb
+C:\Users\david\Desktop\cc_SpeechProject\VocalAssistant\SpeechRecognitionApp\bin\Debug\SpeechRecognitionApp.exe
+C:\Users\david\Desktop\cc_SpeechProject\VocalAssistant\SpeechRecognitionApp\bin\Debug\SpeechRecognitionApp.pdb
+C:\Users\david\Desktop\cc_SpeechProject\VocalAssistant\SpeechRecognitionApp\bin\Debug\Microsoft.Speech.dll
+C:\Users\david\Desktop\cc_SpeechProject\VocalAssistant\SpeechRecognitionApp\obj\Debug\SpeechRecognitionApp.csprojResolveAssemblyReference.cache
+C:\Users\david\Desktop\cc_SpeechProject\VocalAssistant\SpeechRecognitionApp\obj\Debug\SpeechRecognitionApp.Form1.resources
+C:\Users\david\Desktop\cc_SpeechProject\VocalAssistant\SpeechRecognitionApp\obj\Debug\SpeechRecognitionApp.Properties.Resources.resources
+C:\Users\david\Desktop\cc_SpeechProject\VocalAssistant\SpeechRecognitionApp\obj\Debug\SpeechRecognitionApp.csproj.GenerateResource.Cache
