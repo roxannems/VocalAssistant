@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -38,6 +39,9 @@ namespace SpeechRecognitionApp {
         };
 
         string currentDir = System.AppDomain.CurrentDomain.BaseDirectory;
+        ArrayList teams;
+        ArrayList scores;
+        string country;
 
         //Form Declaration
         SpeechSynthesizer ss = new SpeechSynthesizer();
@@ -69,7 +73,9 @@ namespace SpeechRecognitionApp {
                                     "play youtube video number one", "play youtube video number two", "play youtube video number three",
                                     "open windows media player", "open paint",
                                     "get bitcoin value",
-                                    "tell currency-exchange", "tell currency-exchange to Dollar"});
+                                    "tell currency-exchange", "tell currency-exchange to Dollar",
+                                    "get today football results in england", "get today football results in france",
+                                    "get today football results in spain", "get today football results in italy"});
 
         public Form1() {
 
@@ -205,25 +211,41 @@ namespace SpeechRecognitionApp {
                     break;
                 case "get bitcoin value":
                     txtContents.Text += "Bitcoin + ";
-                    string bitcoinValue = ReturnCurrency("https://coinmarketcap.com/currencies/bitcoin/", currentDir + @"\bitcoinFile.html", "quote_price", 2);
+                    string bitcoinValue = ReturnCurrency("https://coinmarketcap.com/currencies/bitcoin/", currentDir + @"\bitcoinFile.html", "quote_price", 4);
                     ss.SpeakAsync(bitcoinValue);
                     txtContents.Text += bitcoinValue + Environment.NewLine;
                     break;
                 case "tell currency-exchange":
                     txtContents.Text += "1 Eur To Ron : ";
-                    string valueEurtoRon = ReturnCurrency("http://www.xe.com/currencyconverter/convert/?Amount=1&From=EUR&To=RON", currentDir + @"\EurToRon.html", "uccResultAmount", 120);
+                    string valueEurtoRon = ReturnCurrency("http://www.xe.com/currencyconverter/convert/?Amount=1&From=EUR&To=RON", currentDir + @"\EurToRon.html", "uccResultAmount", 216);
                     ss.SpeakAsync(valueEurtoRon);
                     txtContents.Text += valueEurtoRon + Environment.NewLine;
                     break;
                 case "tell currency-exchange to Dollar":
                     txtContents.Text += "1 Eur To USD : ";
-                    string valueEurToUsd = ReturnCurrency("http://www.xe.com/currencyconverter/convert/?Amount=1&From=EUR&To=USD", currentDir + @"\EurToUSD.html", "uccResultAmount", 120);
+                    string valueEurToUsd = ReturnCurrency("http://www.xe.com/currencyconverter/convert/?Amount=1&From=EUR&To=USD", currentDir + @"\EurToUSD.html", "uccResultAmount", 216);
                     ss.SpeakAsync(valueEurToUsd);
                     txtContents.Text += valueEurToUsd + Environment.NewLine;
                     break;
                 case "get battery status":
                     ss.SpeakAsync(CheckBatteryStatus());
                     txtContents.Text += CheckBatteryStatus() + Environment.NewLine;
+                    break;
+                case "get today football results in england":
+                    country = e.Result.Text.ToString().Split(' ').Last();
+                    getTodayFootballResults(country);
+                    break;
+                case "get today football results in france":
+                    country = e.Result.Text.ToString().Split(' ').Last();
+                    getTodayFootballResults(country);
+                    break;
+                case "get today football results in spain":
+                    country = e.Result.Text.ToString().Split(' ').Last();
+                    getTodayFootballResults(country);
+                    break;
+                case "get today football results in italy":
+                    country = e.Result.Text.ToString().Split(' ').Last();
+                    getTodayFootballResults(country);
                     break;
 
                 default:
@@ -276,7 +298,7 @@ namespace SpeechRecognitionApp {
             return SystemInformation.PowerStatus.BatteryChargeStatus.ToString();
         }
         public string getCurrentDate() {
-            return DateTime.UtcNow.Date.ToString("dd/MM/yyyy");
+            return DateTime.UtcNow.Date.ToString("MM/dd/yyyy");
         }
         public string ReturnCurrency(string URLstring, string filename, string searchKey, int index) {
             string returnValue = "";
@@ -309,12 +331,102 @@ namespace SpeechRecognitionApp {
         }
 
         public string getCurrencyValue(string myString, int index) {
-            //120 for euro to smth
-            //2 for bitcoin
+            //216 for euro to smth
+            //4 for bitcoin
+            char[] delimiterChars = { '>', '<', '"' };
+            string[] words = myString.Split(delimiterChars);
+
+            return words[index];
+        }
+
+        public string parseData(string myString, int index)
+        {
             char[] delimiterChars = { '>', '<' };
             string[] words = myString.Split(delimiterChars);
 
             return words[index];
         }
+
+        public void getTodayFootballResults(string country)
+        {
+
+            string URLstring = "http://www.oddstake.com/scores/?" + country;
+            string filename = @"D:\Football.html";
+            string searchKey;
+
+            teams = new ArrayList();
+            scores = new ArrayList();
+
+            switch (country)
+            {
+                case "england":
+                    txtContents.Text += "Premier League :" + Environment.NewLine;
+                    searchKey = "http://www.oddstake.com/scorematch/premier-league/";
+                    break;
+                case "france":
+                    txtContents.Text += "Ligue 1 :" + Environment.NewLine;
+                    searchKey = "http://www.oddstake.com/scorematch/ligue-1/";
+                    break;
+                case "spain":
+                    txtContents.Text += "La Liga :" + Environment.NewLine;
+                    searchKey = "http://www.oddstake.com/scorematch/laliga/";
+                    break;
+                case "italy":
+                    txtContents.Text += "Serie A :" + Environment.NewLine;
+                    searchKey = "http://www.oddstake.com/scorematch/serie-a/";
+                    break;
+
+                default:
+                    searchKey = "";
+                    break;
+            }
+
+            try
+            {
+
+                using (WebClient client = new WebClient())
+                {
+
+                    client.DownloadFile(URLstring, filename);
+
+                    string line;
+                    string value;
+
+                    System.IO.StreamReader file =
+                    new System.IO.StreamReader(filename);
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        bool foundTeam = line.Contains(searchKey);
+                        bool foundAwayScore = line.Contains("sbsa");
+                        bool foundHomeScore = line.Contains("sbsh");
+
+                        if (foundTeam)
+                        {
+                            value = parseData(line, 2);
+                            teams.Add(value);
+                        }
+                        else if (foundAwayScore)
+                        {
+                            value = parseData(line, 2);
+                            scores.Add(value);
+                        }
+                        else if (foundHomeScore)
+                        {
+                            value = parseData(line, 2);
+                            scores.Add(value);
+                        }
+                    }
+                    file.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "error");
+            }
+
+            for (int i = 0; i < teams.Count - 1; i += 2)
+                txtContents.Text += " * " + teams[i] + " " + scores[i] + " : " + scores[i + 1] + " " + teams[i + 1] + Environment.NewLine;
+        }
     }
+
 }
