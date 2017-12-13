@@ -42,12 +42,17 @@ namespace SpeechRecognitionApp {
         ArrayList teams;
         ArrayList scores;
         string country;
+        Process myProcess;
 
         //Form Declaration
         SpeechSynthesizer ss = new SpeechSynthesizer();
         PromptBuilder pb = new PromptBuilder();
         SpeechRecognitionEngine sre = new SpeechRecognitionEngine();
-        Choices clist = new Choices(new string[] { "hello", "how are you",
+        Choices clist = new Choices(new string[] {
+                                    "hello",
+                                    "how are you",
+                                    "thank you",
+                                    "close",
                                     "what is the current time",
                                     "what is the current time in Bucharest",
                                     "what is the current time in London",
@@ -65,17 +70,22 @@ namespace SpeechRecognitionApp {
                                     "what is the current time in Tokyo",
                                     "what is the current time in Jakarta",
                                     "open chrome",
+                                    "close chrome",
                                     "open notepad",
-                                    "thank you", "close",
+                                    "close notepad",
+                                    "open windows media player",
+                                    "close windows media player",
+                                    "open paint",
+                                    "close paint",
                                     "get current date",
                                     "get battery status",
-                                    "get IP address", "check Internet connection",
+                                    "get IP address",
+                                    "check Internet connection",
                                     "play youtube video number one", "play youtube video number two", "play youtube video number three",
-                                    "open windows media player", "open paint",
                                     "get bitcoin value",
                                     "tell currency-exchange", "tell currency-exchange to Dollar",
                                     "get today football results in england", "get today football results in france",
-                                    "get today football results in spain", "get today football results in italy"});
+                                    "get today football results in spain", "get today football results in germany"});
 
         public Form1() {
 
@@ -83,7 +93,7 @@ namespace SpeechRecognitionApp {
         }
 
         private void button1_Click(object sender, EventArgs e) {
-            //start
+
             btnStart.Enabled = false;
             btnStop.Enabled = true;
 
@@ -101,13 +111,21 @@ namespace SpeechRecognitionApp {
 
         }
 
-
         private void sre_SpeechRecognized(object sender, SpeechRecognizedEventArgs e) {
             txtContents.Text += e.Result.Text.ToString() + Environment.NewLine;
 
             switch (e.Result.Text.ToString()) {
                 case "hello":
                     ss.SpeakAsync("Hello");
+                    break;
+                case "how are you":
+                    ss.SpeakAsync("I am good, thank you");
+                    break;
+                case "thank you":
+                    ss.SpeakAsync("my pleasure");
+                    break;
+                case "close":
+                    Application.Exit();
                     break;
                 case "what is the current time":
                     ss.SpeakAsync("current time is " + DateTime.Now.ToLongTimeString());
@@ -165,20 +183,33 @@ namespace SpeechRecognitionApp {
                     ss.SpeakAsync("current time in Jakarta is " + getDateTime("Jakarta").ToLongTimeString());
                     txtContents.Text += getDateTime("Jakarta").ToLongTimeString() + Environment.NewLine;
                     break;
-
-                case "thank you":
-                    ss.SpeakAsync("my pleasure");
-                    break;
                 case "open chrome":
-                    Process.Start("chrome", "https://www.youtube.com/watch?v=xug793JfqSE");
-
+                    myProcess = Process.Start("chrome", "https://www.google.com");
+                    break;
+                case "close chrome":
+                    myProcess.CloseMainWindow();
+                    myProcess.Close();
                     break;
                 case "open notepad":
-                    Process.Start("notepad.exe");
-
+                    myProcess = Process.Start("notepad.exe");
                     break;
-                case "close":
-                    Application.Exit();
+                case "close notepad":
+                    myProcess.CloseMainWindow();
+                    myProcess.Close();
+                    break;
+                case "open windows media player":
+                    myProcess = Process.Start("wmplayer.exe");
+                    break;
+                case "close windows media player":
+                    myProcess.CloseMainWindow();
+                    myProcess.Close();
+                    break;
+                case "open paint":
+                    myProcess = Process.Start("mspaint.exe");
+                    break;
+                case "close paint":
+                    myProcess.CloseMainWindow();
+                    myProcess.Close();
                     break;
                 case "get current date":
                     ss.SpeakAsync(getCurrentDate());
@@ -192,14 +223,6 @@ namespace SpeechRecognitionApp {
                     ss.SpeakAsync(CheckIfConnected() + "");
                     txtContents.Text += CheckIfConnected() + Environment.NewLine;
                     break;
-                case "open windows media player":
-                    Process.Start("wmplayer.exe");
-                    //Process.Start("wmplayer.exe", @"C:\Test.mp3");
-                    break;
-                case "open paint":
-                    Process.Start("mspaint.exe");
-                    //Process.Start("mspaint.exe", @"C:\Test.jpg");
-                    break;
                 case "play youtube video number one":
                     Process.Start("chrome", "https://www.youtube.com/watch?v=l-dYNttdgl0");
                     break;
@@ -210,7 +233,7 @@ namespace SpeechRecognitionApp {
                     Process.Start("chrome", "https://www.youtube.com/watch?v=H7hGiZ579cs");
                     break;
                 case "get bitcoin value":
-                    txtContents.Text += "Bitcoin + ";
+                    txtContents.Text += "Bitcoin : ";
                     string bitcoinValue = ReturnCurrency("https://coinmarketcap.com/currencies/bitcoin/", currentDir + @"\bitcoinFile.html", "quote_price", 4);
                     ss.SpeakAsync(bitcoinValue);
                     txtContents.Text += bitcoinValue + Environment.NewLine;
@@ -243,22 +266,16 @@ namespace SpeechRecognitionApp {
                     country = e.Result.Text.ToString().Split(' ').Last();
                     getTodayFootballResults(country);
                     break;
-                case "get today football results in italy":
+                case "get today football results in germany":
                     country = e.Result.Text.ToString().Split(' ').Last();
                     getTodayFootballResults(country);
                     break;
-
                 default:
                     break;
             }
-            //txtContents.Text += e.Result.Text.ToString() + Environment.NewLine;
-
-
         }
 
-
         private void Form1_Load(object sender, EventArgs e) {
-
         }
 
         private void btnStop_Click(object sender, EventArgs e) {
@@ -266,12 +283,12 @@ namespace SpeechRecognitionApp {
             btnStart.Enabled = true;
             btnStop.Enabled = false;
         }
+
         public DateTime getDateTime(string cityName) {
             int value = 0;
             if (CitiesTimeZonesDicitonary.ContainsKey(cityName)) {
                 value = CitiesTimeZonesDicitonary[cityName];
             }
-
             return DateTime.Now.AddHours(value);
         }
 
@@ -284,40 +301,53 @@ namespace SpeechRecognitionApp {
             }
             throw new Exception("No network adapters with an IPv4 address in the system!");
         }
-        //To check if you're connected or not:
-        public static bool CheckIfConnected() {
-            return System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable();
-        }
-        public string CheckBatteryStatus() {
-            //BatteryChargeStatus.Text = SystemInformation.PowerStatus.BatteryChargeStatus.ToString();
-            //BatteryFullLifetime.Text = SystemInformation.PowerStatus.BatteryFullLifetime.ToString();
-            //BatteryLifePercent.Text = SystemInformation.PowerStatus.BatteryLifePercent.ToString();
-            //BatteryLifeRemaining.Text = SystemInformation.PowerStatus.BatteryLifeRemaining.ToString();
-            //PowerLineStatus.Text = SystemInformation.PowerStatus.PowerLineStatus.ToString();
 
+        public static bool CheckIfConnected() {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    using (client.OpenRead("http://clients3.google.com/generate_204"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+               return false;
+            }
+        }
+
+        public string CheckBatteryStatus() {
             return SystemInformation.PowerStatus.BatteryChargeStatus.ToString();
         }
+
         public string getCurrentDate() {
             return DateTime.UtcNow.Date.ToString("MM/dd/yyyy");
         }
+
+        public string getCurrencyValue(string myString, int index) {
+            char[] delimiterChars = { '>', '<', '"' };
+            string[] words = myString.Split(delimiterChars);
+
+            return words[index];
+        }
+
         public string ReturnCurrency(string URLstring, string filename, string searchKey, int index) {
             string returnValue = "";
             try {
-
-                using (WebClient client = new WebClient()) // WebClient class inherits IDisposable
+                using (WebClient client = new WebClient())
                 {
-
-                    client.DownloadFile(URLstring, filename);
+                   client.DownloadFile(URLstring, filename);
 
                     string line;
-
                     System.IO.StreamReader file =
                     new System.IO.StreamReader(filename);
                     while ((line = file.ReadLine()) != null) {
                         bool found = line.Contains(searchKey);
                         if (found) {
                             returnValue = getCurrencyValue(line, index);
-
                             break;
                         }
                     }
@@ -330,28 +360,16 @@ namespace SpeechRecognitionApp {
             return returnValue;
         }
 
-        public string getCurrencyValue(string myString, int index) {
-            //216 for euro to smth
-            //4 for bitcoin
-            char[] delimiterChars = { '>', '<', '"' };
-            string[] words = myString.Split(delimiterChars);
-
-            return words[index];
-        }
-
-        public string parseData(string myString, int index)
-        {
+        public string parseData(string myString, int index) {
             char[] delimiterChars = { '>', '<' };
             string[] words = myString.Split(delimiterChars);
 
             return words[index];
         }
 
-        public void getTodayFootballResults(string country)
-        {
-
+        public void getTodayFootballResults(string country) {
             string URLstring = "http://www.oddstake.com/scores/?" + country;
-            string filename = @"D:\Football.html";
+            string filename =  currentDir + @"\Football.html";
             string searchKey;
 
             teams = new ArrayList();
@@ -371,9 +389,9 @@ namespace SpeechRecognitionApp {
                     txtContents.Text += "La Liga :" + Environment.NewLine;
                     searchKey = "http://www.oddstake.com/scorematch/laliga/";
                     break;
-                case "italy":
-                    txtContents.Text += "Serie A :" + Environment.NewLine;
-                    searchKey = "http://www.oddstake.com/scorematch/serie-a/";
+                case "germany":
+                    txtContents.Text += "Bundesliga :" + Environment.NewLine;
+                    searchKey = "http://www.oddstake.com/scorematch/bundesliga/";
                     break;
 
                 default:
@@ -383,7 +401,6 @@ namespace SpeechRecognitionApp {
 
             try
             {
-
                 using (WebClient client = new WebClient())
                 {
 
@@ -391,7 +408,6 @@ namespace SpeechRecognitionApp {
 
                     string line;
                     string value;
-
                     System.IO.StreamReader file =
                     new System.IO.StreamReader(filename);
                     while ((line = file.ReadLine()) != null)
@@ -404,13 +420,11 @@ namespace SpeechRecognitionApp {
                         {
                             value = parseData(line, 2);
                             teams.Add(value);
-                        }
-                        else if (foundAwayScore)
+                        } else if (foundAwayScore)
                         {
                             value = parseData(line, 2);
                             scores.Add(value);
-                        }
-                        else if (foundHomeScore)
+                        } else if (foundHomeScore)
                         {
                             value = parseData(line, 2);
                             scores.Add(value);
