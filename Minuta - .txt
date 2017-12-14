@@ -1,0 +1,25 @@
+Minuta - 18.11.2017
+
+Student Pub - 19:38
+
+Octav  <- Dev + Tester
+David  <- Dev
+Robert <- Dev
+Roxana <- PM
+
+-- In ce lucram?
+C#
+
+-- Cine ce face?
+
+Cautam biblioteca - comenzi vocale
+
+Distribuim sarcinile:
+
+David  - bitcoin, paint, notepad, windows mp,
+	currency exchange, youtube videos
+Octav  - facebook notifications
+Robert - facebook notifications
+
+de impartit: chrome, IP address, get date, current time
+ + current time diff, internet connection
